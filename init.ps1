@@ -54,7 +54,8 @@ $windowsTools = @(
     "Microsoft.WindowsTerminal",
     "Microsoft.PowerShell",
     "JanDeDobbeleer.OhMyPosh",
-    "7zip.7zip"
+    "7zip.7zip",
+    "Microsoft.Office"
 )
 
 $communicationApps = @(
@@ -87,12 +88,12 @@ function Install-Apps {
 
 # Install all application groups
 $installGroups = @{
-    "Browsers" = $browserApps
-    "Development Tools" = $developmentApps
-    "JetBrains Tools" = $jetbrainsApps
-    "Node.js Tools" = $nodeTools
-    "Git Tools" = $gitTools
-    "Windows Tools" = $windowsTools
+    "Browsers"           = $browserApps
+    "Development Tools"  = $developmentApps
+    "JetBrains Tools"    = $jetbrainsApps
+    "Node.js Tools"      = $nodeTools
+    "Git Tools"          = $gitTools
+    "Windows Tools"      = $windowsTools
     "Communication Apps" = $communicationApps
 }
 
@@ -112,7 +113,8 @@ if ($wslConfirm.ToLower() -eq "y") {
     catch {
         Write-Error "Error enabling WSL: $_"
     }
-} else {
+}
+else {
     Write-Host "Skipping WSL installation." -ForegroundColor Yellow
 }
 
