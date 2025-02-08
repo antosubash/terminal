@@ -61,7 +61,9 @@ $windowsTools = @(
 $communicationApps = @(
     "Microsoft.Teams",
     "Discord.Discord",
-    "Zoom.Zoom"
+    "Zoom.Zoom",
+    "WhatsApp.WhatsApp",
+    "SlackTechnologies.Slack"
 )
 
 # Installation function
