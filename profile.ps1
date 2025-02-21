@@ -31,7 +31,7 @@ function ...... { Set-Location ../../.. }
 # Navigate to user's home directory
 function home { Set-Location $HOME }
 # Navigate to my development directory
-function repos { Set-Location "D:\" }
+function repos { Set-Location "C:\repos\github" }
 # Navigate to my ssh directory
 function ssh_home { Set-Location "$HOME\.ssh" }
 # Open my ssh config file
@@ -64,6 +64,128 @@ function dsr { docker stack rm $args[0] }
 function dsl { docker service logs $args[0] }
 # Docker stack services
 function dss { docker stack services $args[0] }
+
+# Kubernetes Command Shortcuts
+# Basic kubectl commands
+function k { kubectl $args }
+function kca { kubectl --all-namespaces $args }
+function kaf { kubectl apply -f $args }
+function keti { kubectl exec -ti $args }
+
+# Pod management
+function kgp { kubectl get pods $args }
+function kgpa { kubectl get pods --all-namespaces $args }
+function kgpw { kubectl get pods --watch $args }
+function kgpwide { kubectl get pods -o wide $args }
+function kep { kubectl edit pods $args }
+function kdp { kubectl describe pods $args }
+function kdelp { kubectl delete pods $args }
+function kgpall { kubectl get pods --all-namespaces -o wide $args }
+
+# Service management
+function kgs { kubectl get svc $args }
+function kgsa { kubectl get svc --all-namespaces $args }
+function kgsw { kubectl get svc --watch $args }
+function kgswide { kubectl get svc -o wide $args }
+function kes { kubectl edit svc $args }
+function kds { kubectl describe svc $args }
+function kdels { kubectl delete svc $args }
+
+# Deployment management
+function kgd { kubectl get deployment $args }
+function kgda { kubectl get deployment --all-namespaces $args }
+function kgdw { kubectl get deployment --watch $args }
+function kgdwide { kubectl get deployment -o wide $args }
+function ked { kubectl edit deployment $args }
+function kdd { kubectl describe deployment $args }
+function kdeld { kubectl delete deployment $args }
+function ksd { kubectl scale deployment $args }
+function krsd { kubectl rollout status deployment $args }
+function krbd { kubectl rollback deployment $args }
+function kpd { kubectl patch deployment $args }
+
+# Namespaces and contexts
+function kgns { kubectl get namespaces $args }
+function kcgc { kubectl config get-contexts $args }
+function kcsc { kubectl config set-context $args }
+function kccc { kubectl config current-context }
+function kcdc { kubectl config delete-context $args }
+function kcuc { kubectl config use-context $args }
+
+# ConfigMap and secrets
+function kgcm { kubectl get configmaps $args }
+function kecm { kubectl edit configmap $args }
+function kdcm { kubectl describe configmap $args }
+function kdelcm { kubectl delete configmap $args }
+function kgsec { kubectl get secret $args }
+function kdsec { kubectl describe secret $args }
+function kdelsec { kubectl delete secret $args }
+
+# Nodes
+function kgno { kubectl get nodes $args }
+function keno { kubectl edit node $args }
+function kdno { kubectl describe node $args }
+function kdelno { kubectl delete node $args }
+
+# Logs and monitoring
+function kl { kubectl logs $args }
+function klf { kubectl logs -f $args }
+function klft { kubectl logs -f --tail=$args[0] $args[1] }
+function ktp { kubectl top pod $args }
+function ktno { kubectl top node $args }
+
+# Port forwarding
+function kpf { kubectl port-forward $args }
+function kpfa { kubectl port-forward-all $args }
+
+# Rolling updates and rollbacks
+function kgrs { kubectl get rs $args }
+function krh { kubectl rollout history $args }
+function kru { kubectl rollout undo $args }
+
+# Resource Quotas and Limits
+function kgrq { kubectl get resourcequota $args }
+function kdrq { kubectl describe resourcequota $args }
+function kglr { kubectl get limitrange $args }
+function kdlr { kubectl describe limitrange $args }
+
+# Events and debugging
+function kge { kubectl get events --sort-by='.metadata.creationTimestamp' $args }
+function kgea { kubectl get events --all-namespaces --sort-by='.metadata.creationTimestamp' $args }
+function kdrain { kubectl drain $args }
+function kcordon { kubectl cordon $args }
+function kuncordon { kubectl uncordon $args }
+
+# ClusterRole and Role management
+function kgcr { kubectl get clusterrole $args }
+function kgcrb { kubectl get clusterrolebinding $args }
+function kgr { kubectl get role $args }
+function kgrb { kubectl get rolebinding $args }
+
+# Advanced usage
+function kexn([string]$ns) { kubectl exec -it --namespace=$ns $args }
+function klon([string]$ns) { kubectl logs --namespace=$ns $args }
+function kgpn([string]$ns) { kubectl get pods --namespace=$ns $args }
+function kgsn([string]$ns) { kubectl get svc --namespace=$ns $args }
+function kgdn([string]$ns) { kubectl get deployment --namespace=$ns $args }
+
+# Working with yaml
+function kgy { kubectl get -o yaml $args }
+function kepy { kubectl edit -o yaml $args }
+
+# Neat tricks
+function kenc { kubectl config view --minify --flatten }
+function kdiff { kubectl diff -f $args }
+function kef { kubectl exec -it $args[0] -- sh -c "bash || ash || sh" }
+
+# Add completion for kubectl commands
+Register-ArgumentCompleter -Native -CommandName kubectl -ScriptBlock {
+    param($wordToComplete, $commandAst, $cursorPosition)
+    $env:COMP_LINE=$commandAst.ToString()
+    $env:COMP_POINT=$cursorPosition
+    kubectl completion powershell | Out-String | Invoke-Expression
+    return @(kubectl completion powershell $wordToComplete $commandAst $cursorPosition)
+}
 
 # Git Command Shortcuts
 # Create and checkout new branch
