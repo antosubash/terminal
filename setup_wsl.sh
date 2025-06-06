@@ -15,8 +15,8 @@ echo "📊 Checking ZSH version..."
 zsh --version
 
 # Change default shell to ZSH
-echo "🔄 Changing default shell to ZSH..."
-chsh -s $(which zsh)
+# echo "🔄 Changing default shell to ZSH..."
+# chsh -s $(which zsh)
 
 # Install Oh My Zsh
 echo "📥 Installing Oh My Zsh..."
